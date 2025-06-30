@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uvi</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- Splash screen -->
+    <div id="splash" class="splash-screen">Uvi</div>
+
+    <!-- Home screen -->
+    <div class="home-screen hidden">
+      <header><h1>For You</h1></header>
+      <input type="text" id="searchInput" placeholder="Search songs..." />
+      <div id="songList" class="song-list"></div>
+    </div>
+
+    <!-- Now Playing -->
+    <div id="nowPlaying" class="now-playing hidden">
+      <button id="backButton">←</button>
+      <img id="nowThumb" />
+      <h2 id="nowTitle"></h2>
+      <audio id="nowAudio" controls></audio>
+    </div>
+
+    <!-- Mini Player -->
+    <div id="miniPlayer" class="mini-player hidden">
+      <span id="miniTitle"></span>
+      <button id="miniPlay">⏵</button>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
