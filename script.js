@@ -1,4 +1,4 @@
-// Firebase config (replace with your new config if needed)
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyDhO9O7Pi7wmrvQ7sEwAJVCK81jLAOtax0",
   authDomain: "uvii-b71f2.firebaseapp.com",
@@ -10,70 +10,53 @@ const firebaseConfig = {
   measurementId: "G-TJYR1NL9P4"
 };
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
+// Firebase init
+import("https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js").then(async ({ initializeApp }) => {
+  const app = initializeApp(firebaseConfig);
 
-const songsContainer = document.getElementById("songs");
-const audio = new Audio();
-const miniPlayer = document.getElementById("mini-player");
-const miniTitle = document.getElementById("mini-title");
-const miniPlayBtn = document.getElementById("mini-play-btn");
-const consoleBox = document.getElementById("console-box");
+  const { getDatabase, ref, onValue } = await import("https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js");
+  const db = getDatabase(app);
 
-// Console logger
-function log(msg) {
-  console.log(msg);
-  if (consoleBox) {
-    consoleBox.innerText += msg + "\n";
+  const songList = document.getElementById("songList");
+  const audioPlayer = document.getElementById("audioPlayer");
+  const consoleBox = document.getElementById("consoleBox");
+
+  function log(msg) {
+    console.log(msg);
+    consoleBox.innerHTML += `<div>> ${msg}</div>`;
     consoleBox.scrollTop = consoleBox.scrollHeight;
   }
-}
 
-// Load songs
-function loadSongs() {
-  log("Loading songs...");
-  db.ref("songs").once("value", (snapshot) => {
+  log("Fetching songs...");
+
+  onValue(ref(db, "songs"), (snapshot) => {
     const data = snapshot.val();
-    if (!data) return log("No songs found.");
-    songsContainer.innerHTML = "";
+    songList.innerHTML = "";
+
+    if (!data) {
+      log("No songs found in Firebase.");
+      return;
+    }
 
     Object.values(data).forEach((song) => {
       const card = document.createElement("div");
       card.className = "song-card";
       card.innerHTML = `
-        <img src="${song.thumbnail}" class="thumbnail" />
-        <div class="title">${song.title}</div>
+        <img src="${song.thumbnail}" alt="${song.title}" />
+        <div class="song-title">${song.title}</div>
       `;
-      card.onclick = () => playSong(song);
-      songsContainer.appendChild(card);
+
+      card.addEventListener("click", () => {
+        audioPlayer.src = song.audio_url;
+        audioPlayer.play();
+        log(`Now playing: ${song.title}`);
+      });
+
+      songList.appendChild(card);
     });
 
-    log("Songs loaded: " + Object.keys(data).length);
+    log("Songs loaded successfully.");
+  }, (error) => {
+    log("Error fetching songs: " + error.message);
   });
-}
-
-// Play song
-function playSong(song) {
-  log("Playing: " + song.title);
-  audio.src = song.audio_url;
-  audio.play();
-
-  miniTitle.innerText = song.title;
-  miniPlayBtn.innerText = "Pause";
-  miniPlayer.style.display = "flex";
-}
-
-// Mini player control
-miniPlayBtn.onclick = () => {
-  if (audio.paused) {
-    audio.play();
-    miniPlayBtn.innerText = "Pause";
-  } else {
-    audio.pause();
-    miniPlayBtn.innerText = "Play";
-  }
-};
-
-// Init
-loadSongs();
+});
