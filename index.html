@@ -1,62 +1,94 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Uvi Music</title>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f9f9f9;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-    }
-
-    h1 {
-      margin: 20px;
-      color: #333;
-    }
-
-    #song-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 10px;
-      gap: 20px;
-    }
-
-    .song-card {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 15px;
-      width: 250px;
-      text-align: center;
-    }
-
-    .song-card img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-
-    .song-card h3 {
-      font-size: 16px;
-      margin: 10px 0;
-    }
-
-    .song-card audio {
-      width: 100%;
-    }
-  </style>
-</head>
-<body>
-  <h1>🎵 Uvi Music</h1>
-  <div id="song-container">Loading songs...</div>
-
-  <!-- Link to JS -->
-  <script type="module" src="script.js"></script>
-</body>
+<!DOCTYPE html><html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uvi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        margin: 0;
+        font-family: 'DM Sans', sans-serif;
+        background: linear-gradient(145deg, #121212, #1e1e1e);
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        overflow: hidden;
+      }
+      header {
+        padding: 1rem;
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        background: #141414;
+      }
+      #log {
+        font-size: 0.8rem;
+        background: #111;
+        padding: 5px;
+        color: lime;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        height: 80px;
+      }
+      #songs {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 1rem;
+      }
+      .song {
+        background: #222;
+        border-radius: 12px;
+        padding: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+      .song:hover {
+        background: #333;
+      }
+      .song img {
+        width: 100%;
+        border-radius: 10px;
+      }
+      .song-title {
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        font-weight: bold;
+      }
+      #player {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background: #181818;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      #player audio {
+        width: 70%;
+      }
+      #player .title {
+        flex: 1;
+        margin-left: 1rem;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>Uvi</header>
+    <div id="log">Console log here...</div>
+    <div id="songs"></div>
+    <div id="player">
+      <div class="title">No song playing</div>
+      <audio id="audio" controls></audio>
+    </div>
+    <script type="module" src="script.js"></script>
+  </body>
 </html>
