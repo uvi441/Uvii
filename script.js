@@ -1,7 +1,4 @@
-// Firebase setup
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
-
+// Firebase config (replace with your new config if needed)
 const firebaseConfig = {
   apiKey: "AIzaSyDhO9O7Pi7wmrvQ7sEwAJVCK81jLAOtax0",
   authDomain: "uvii-b71f2.firebaseapp.com",
@@ -14,39 +11,69 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-console.log("Initializing Firebase...");
-const app = initializeApp(firebaseConfig);
-const database = getDatabase(app);
-console.log("Firebase Initialized ✅");
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
-// Reference to songs
-const songsRef = ref(database, 'songs/');
+const songsContainer = document.getElementById("songs");
+const audio = new Audio();
+const miniPlayer = document.getElementById("mini-player");
+const miniTitle = document.getElementById("mini-title");
+const miniPlayBtn = document.getElementById("mini-play-btn");
+const consoleBox = document.getElementById("console-box");
 
-onValue(songsRef, (snapshot) => {
-  if (snapshot.exists()) {
-    const songsData = snapshot.val();
-    console.log("🎵 Songs fetched from Firebase:", songsData);
+// Console logger
+function log(msg) {
+  console.log(msg);
+  if (consoleBox) {
+    consoleBox.innerText += msg + "\n";
+    consoleBox.scrollTop = consoleBox.scrollHeight;
+  }
+}
 
-    const songContainer = document.getElementById('song-container');
-    songContainer.innerHTML = '';
+// Load songs
+function loadSongs() {
+  log("Loading songs...");
+  db.ref("songs").once("value", (snapshot) => {
+    const data = snapshot.val();
+    if (!data) return log("No songs found.");
+    songsContainer.innerHTML = "";
 
-    Object.entries(songsData).forEach(([key, song]) => {
-      const songCard = document.createElement('div');
-      songCard.className = 'song-card';
-
-      songCard.innerHTML = `
-        <img src="${song.thumbnail}" alt="Thumbnail" />
-        <h3>${song.title}</h3>
-        <audio controls src="${song.audio_url}"></audio>
+    Object.values(data).forEach((song) => {
+      const card = document.createElement("div");
+      card.className = "song-card";
+      card.innerHTML = `
+        <img src="${song.thumbnail}" class="thumbnail" />
+        <div class="title">${song.title}</div>
       `;
-
-      songContainer.appendChild(songCard);
+      card.onclick = () => playSong(song);
+      songsContainer.appendChild(card);
     });
 
+    log("Songs loaded: " + Object.keys(data).length);
+  });
+}
+
+// Play song
+function playSong(song) {
+  log("Playing: " + song.title);
+  audio.src = song.audio_url;
+  audio.play();
+
+  miniTitle.innerText = song.title;
+  miniPlayBtn.innerText = "Pause";
+  miniPlayer.style.display = "flex";
+}
+
+// Mini player control
+miniPlayBtn.onclick = () => {
+  if (audio.paused) {
+    audio.play();
+    miniPlayBtn.innerText = "Pause";
   } else {
-    console.warn("⚠️ No songs found in Firebase.");
-    document.getElementById('song-container').innerText = "No songs found.";
+    audio.pause();
+    miniPlayBtn.innerText = "Play";
   }
-}, (error) => {
-  console.error("❌ Error fetching songs:", error);
-});
+};
+
+// Init
+loadSongs();
