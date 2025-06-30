@@ -1,0 +1,39 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  background: #f5f7fa;
+  color: #333;
+}
+.splash-screen {
+  font-size: 2rem;
+  text-align: center;
+  padding: 100px;
+}
+.hidden {
+  display: none;
+}
+.song-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 1rem;
+}
+.song-card {
+  background: white;
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.now-playing {
+  padding: 1rem;
+}
+.mini-player {
+  position: fixed;
+  bottom: 0;
+  background: #fff;
+  width: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+}
