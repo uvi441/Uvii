@@ -2,36 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Uvi</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Uvi Music</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 20px;
+      color: #333;
+    }
+
+    #song-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px;
+      gap: 20px;
+    }
+
+    .song-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 250px;
+      text-align: center;
+    }
+
+    .song-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .song-card h3 {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+
+    .song-card audio {
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <!-- Splash screen -->
-    <div id="splash" class="splash-screen">Uvi</div>
+  <h1>🎵 Uvi Music</h1>
+  <div id="song-container">Loading songs...</div>
 
-    <!-- Home screen -->
-    <div class="home-screen hidden">
-      <header><h1>For You</h1></header>
-      <input type="text" id="searchInput" placeholder="Search songs..." />
-      <div id="songList" class="song-list"></div>
-    </div>
-
-    <!-- Now Playing -->
-    <div id="nowPlaying" class="now-playing hidden">
-      <button id="backButton">←</button>
-      <img id="nowThumb" />
-      <h2 id="nowTitle"></h2>
-      <audio id="nowAudio" controls></audio>
-    </div>
-
-    <!-- Mini Player -->
-    <div id="miniPlayer" class="mini-player hidden">
-      <span id="miniTitle"></span>
-      <button id="miniPlay">⏵</button>
-    </div>
-  </div>
-  <script src="script.js"></script>
+  <!-- Link to JS -->
+  <script type="module" src="script.js"></script>
 </body>
 </html>
